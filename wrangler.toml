@@ -3,8 +3,15 @@ main = "src/index.ts"
 compatibility_date = "2025-04-30"
 compatibility_flags = ["nodejs_compat"]
 
+[vars]
+# Reemplazar con el dominio del frontend cuando esté listo, ej: "https://mi-app.pages.dev"
+ALLOWED_ORIGIN = "*"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "cloudfire-db"
 database_id = "42cb9c6b-eb30-4c5d-bc6f-507481060cd1"
 migrations_dir = "migrations"
+
+# API_KEY se configura como secret (nunca en este archivo):
+# wrangler secret put API_KEY
