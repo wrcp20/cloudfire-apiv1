@@ -1,0 +1,10 @@
+name = "cloudfire-apiv1"
+main = "src/index.ts"
+compatibility_date = "2025-04-30"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cloudfire-db"
+database_id = "42cb9c6b-eb30-4c5d-bc6f-507481060cd1"
+migrations_dir = "migrations"

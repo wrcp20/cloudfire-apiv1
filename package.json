@@ -1,0 +1,20 @@
+{
+  "name": "cloudfire-apiv1",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply cloudfire-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply cloudfire-db --remote",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250430.0",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.86.0"
+  },
+  "dependencies": {
+    "hono": "^4.7.10"
+  }
+}
