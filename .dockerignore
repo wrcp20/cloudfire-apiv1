@@ -1,0 +1,7 @@
+node_modules
+.wrangler
+dist
+.git
+.github
+*.md
+.env*

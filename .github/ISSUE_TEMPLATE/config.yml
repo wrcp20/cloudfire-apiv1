@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentación
+    url: https://github.com/wrcp20/cloudfire-apiv1/wiki
+    about: Consultá la wiki del proyecto antes de abrir un issue.

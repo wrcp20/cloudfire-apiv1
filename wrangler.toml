@@ -15,3 +15,18 @@ migrations_dir = "migrations"
 
 # API_KEY se configura como secret (nunca en este archivo):
 # wrangler secret put API_KEY
+
+# ─── Ambiente staging ────────────────────────────────────────────────────────
+[env.staging]
+name = "cloudfire-apiv1-staging"
+
+[env.staging.vars]
+ALLOWED_ORIGIN = "*"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "cloudfire-db-staging"
+database_id = "daa3cd8f-d45c-4976-970c-28203ee2bae0"
+migrations_dir = "migrations"
+
+# wrangler secret put API_KEY --env staging

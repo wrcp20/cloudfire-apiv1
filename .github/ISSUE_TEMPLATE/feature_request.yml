@@ -1,0 +1,51 @@
+name: Feature Request
+description: Proponer una nueva funcionalidad
+title: "feat: "
+labels: ["feature", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: "## Nueva Funcionalidad"
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema que resuelve
+      description: ¿Qué problema o necesidad motiva esta feature?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solución propuesta
+      description: Descripción de la solución que tenés en mente.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - API (Worker / Hono)
+        - Base de datos (D1)
+        - CI/CD
+        - Seguridad
+        - Documentación
+        - Frontend
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+      description: ¿Hay otras formas de resolver el problema?
+
+  - type: checkboxes
+    id: breaking
+    attributes:
+      label: Breaking change
+      options:
+        - label: Esta feature introduce cambios que rompen compatibilidad hacia atrás

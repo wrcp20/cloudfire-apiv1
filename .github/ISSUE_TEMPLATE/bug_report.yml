@@ -1,0 +1,60 @@
+name: Bug Report
+description: Reportar un error o comportamiento inesperado
+title: "bug: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: "## Reporte de Bug"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción
+      description: Descripción clara y concisa del bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducir
+      description: Pasos para reproducir el comportamiento.
+      placeholder: |
+        1. Hacer request a `POST /items` con...
+        2. Observar que...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamiento esperado
+      description: ¿Qué debería pasar?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Comportamiento actual
+      description: ¿Qué pasa en realidad? Incluí response, status code, logs.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Ambiente
+      options:
+        - Producción (workers.dev)
+        - Staging (workers.dev)
+        - Local
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto adicional
+      description: Logs de `wrangler tail`, curl commands, etc.
