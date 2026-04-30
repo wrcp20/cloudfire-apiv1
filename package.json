@@ -5,13 +5,22 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "db:migrate:local": "wrangler d1 migrations apply cloudfire-db --local",
+    "deploy:staging": "wrangler deploy --env staging",
     "db:migrate:remote": "wrangler d1 migrations apply cloudfire-db --remote",
-    "typecheck": "tsc --noEmit"
+    "db:migrate:staging": "wrangler d1 migrations apply cloudfire-db-staging --env staging --remote",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250430.0",
+    "@eslint/js": "^9.26.0",
+    "eslint": "^9.26.0",
     "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.0",
+    "vitest": "^4.1.5",
     "wrangler": "^4.86.0"
   },
   "dependencies": {

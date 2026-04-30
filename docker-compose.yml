@@ -1,0 +1,37 @@
+services:
+  # ─── Dev server (wrangler dev --local con D1 SQLite local) ─────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules        # node_modules del container (Linux)
+      - wrangler_cache:/root/.config/wrangler # cache del binario workerd
+      - wrangler_state:/app/.wrangler         # estado local de D1 (persiste entre reinicios)
+    ports:
+      - "8787:8787"
+    environment:
+      # Para dev local no se necesita el token, wrangler corre en modo local
+      # Para conectar a staging/prod remoto, colocar el token en .env
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN:-}
+      CLOUDFLARE_ACCOUNT_ID: fed835a88054981371bdc3d428e25dc9
+    entrypoint: ["/bin/sh", "/app/scripts/docker-entrypoint.sh"]
+    command: ["npm", "run", "dev"]
+
+  # ─── Test runner (vitest con D1 mock en memoria) ──────────────────────────
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    command: npm test
+    profiles:
+      - test
+
+volumes:
+  node_modules:
+  wrangler_cache:
+  wrangler_state:

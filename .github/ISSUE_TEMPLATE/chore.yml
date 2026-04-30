@@ -1,0 +1,39 @@
+name: Chore / Mantenimiento
+description: Tareas de mantenimiento, refactor, dependencias, CI/CD
+title: "chore: "
+labels: ["chore"]
+body:
+  - type: markdown
+    attributes:
+      value: "## Tarea de Mantenimiento"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción
+      description: ¿Qué hay que hacer y por qué?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Tipo
+      options:
+        - Dependencias / Updates
+        - Refactor
+        - CI/CD
+        - Configuración
+        - Documentación
+        - Otro
+    validations:
+      required: true
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Pasos necesarios para completar la tarea.
+      placeholder: |
+        - [ ] Paso 1
+        - [ ] Paso 2

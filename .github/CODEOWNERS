@@ -1,0 +1,6 @@
+# Todos los archivos requieren review del owner
+* @wrcp20
+
+# Workflows de CI/CD requieren review explícito
+.github/workflows/ @wrcp20
+wrangler.toml @wrcp20

@@ -1,0 +1,17 @@
+FROM node:20-bullseye-slim
+
+WORKDIR /app
+
+# curl necesario para que wrangler descargue el binario workerd
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Instalar dependencias primero (capa cacheada)
+COPY package*.json ./
+RUN npm ci
+
+# Copiar el código fuente
+COPY . .
+
+EXPOSE 8787
+
+CMD ["npm", "run", "dev"]
