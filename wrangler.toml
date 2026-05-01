@@ -5,7 +5,7 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 # Reemplazar con el dominio del frontend cuando esté listo, ej: "https://mi-app.pages.dev"
-ALLOWED_ORIGIN = "*"
+ALLOWED_ORIGIN = "https://cloudfire-webv2.pages.dev"
 
 [[d1_databases]]
 binding = "DB"
