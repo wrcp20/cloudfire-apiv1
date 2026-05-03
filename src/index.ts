@@ -3,6 +3,13 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { apiKeyAuth } from './middleware/apiKey'
+import {
+  CategoriesCreate,
+  CategoriesDelete,
+  CategoriesGet,
+  CategoriesList,
+  CategoriesUpdate,
+} from './routes/categories'
 import { ItemsCreate, ItemsDelete, ItemsGet, ItemsList, ItemsUpdate } from './routes/items'
 import type { Bindings } from './types'
 
@@ -33,5 +40,10 @@ openapi.get('/items/:id', ItemsGet)
 openapi.post('/items', ItemsCreate)
 openapi.put('/items/:id', ItemsUpdate)
 openapi.delete('/items/:id', ItemsDelete)
+openapi.get('/categories', CategoriesList)
+openapi.get('/categories/:id', CategoriesGet)
+openapi.post('/categories', CategoriesCreate)
+openapi.put('/categories/:id', CategoriesUpdate)
+openapi.delete('/categories/:id', CategoriesDelete)
 
 export default app
