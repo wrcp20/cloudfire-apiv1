@@ -1,7 +1,7 @@
 # Session State — cloudfire-apiv1 v2 upgrade
 
 **Last updated:** 2026-05-03  
-**Status:** PR1 ya fue mergeado a `main` mediante el PR `#13`. PR2 (`feat/categories`) quedó implementado localmente y listo para PR. PR3-PR4 siguen pendientes.
+**Status:** PR1 y PR2 ya fueron mergeados a `main` mediante los PRs `#13` y `#15`. PR3 (`feat/users`) quedó implementado localmente y listo para PR. PR4 sigue pendiente.
 
 ---
 
@@ -16,6 +16,8 @@
 7. **PR1-b ejecutado localmente** — `items` migrado a Zod + Drizzle + Chanfana (`src/schemas/items.schema.ts`, `src/repositories/items.repository.ts`, `src/routes/items.ts`, `src/index.ts`), mock D1 reemplazado por SQLite real en memoria con `better-sqlite3`, tests ampliados a 26 casos
 8. **PR1 mergeado** — PR `#13` (`feat(api): migrate items to drizzle and chanfana`) mergeado a `main`; checks de CI, tests y staging en verde
 9. **PR2 implementado localmente** — issue `#14` creado y agregado al board; branch `feat/categories` activa con `categories` en esquema/repository/route/index y tests CRUD validados
+10. **PR2 mergeado** — PR `#15` (`feat(api): add categories resource`) mergeado a `main`; checks de CI, tests y staging en verde
+11. **PR3 implementado localmente** — issue `#16` creado y agregado al board; branch `feat/users` activa con `users` en schema/repository/route/index y tests CRUD validados
 
 ---
 
@@ -65,9 +67,9 @@ order_items id, order_id→orders, item_id→items, quantity, unit_price(snapsho
 |---|---|---|---|
 | PR1-a | GitHub issue + deps + Drizzle schema + migration + types | `feat/infra-drizzle-chanfana` | **MERGEADO EN MAIN** |
 | PR1-b | Items schema + repo + route + index.ts + d1-mock + tests + PR | `feat/infra-drizzle-chanfana` | **MERGEADO EN MAIN** |
-| PR2 | Categories resource completo + PR | `feat/categories` | **COMPLETADO LOCAL / LISTO PARA PR** |
-| PR3 | Users resource completo + PR | `feat/users` | **PENDIENTE** (espera PR1) |
-| PR4 | Orders resource + service + PR | `feat/orders` | **PENDIENTE** (espera PR1+PR3) |
+| PR2 | Categories resource completo + PR | `feat/categories` | **MERGEADO EN MAIN** |
+| PR3 | Users resource completo + PR | `feat/users` | **COMPLETADO LOCAL / LISTO PARA PR** |
+| PR4 | Orders resource + service + PR | `feat/orders` | **PENDIENTE** (espera PR3) |
 
 ---
 
@@ -76,12 +78,13 @@ order_items id, order_id→orders, item_id→items, quantity, unit_price(snapsho
 1. Leer este archivo
 2. Leer el plan completo: `docs/superpowers/plans/2026-05-01-apiv1-v2-clean-code.md`
 3. Verificar estado del repo: `git branch -a` y `git status`
-4. Hacer commit/push/PR de `feat/categories` y luego arrancar `PR3` desde una branch nueva (`feat/users`)
+4. Hacer commit/push/PR de `feat/users` y luego arrancar `PR4` desde `feat/orders`
 5. Ejecutar con: invocar skill `superpowers:subagent-driven-development`
 6. Tests corren via Docker: `docker compose --profile test run --rm test`
 7. NUNCA correr `npm install` en el host — solo dentro de Docker
 8. `docker compose --profile test run --rm test npm run typecheck`, `npm test` y `npm run lint` pasan; lint deja warnings por casts de compatibilidad en Chanfana
 9. `categories` agrega 12 tests nuevos; suite total actual: 38 tests en verde
+10. `users` agrega 12 tests nuevos; suite total actual: 50 tests en verde
 
 ---
 
@@ -99,6 +102,6 @@ order_items id, order_id→orders, item_id→items, quantity, unit_price(snapsho
 
 - Task #1 — PR1-a (infra): merged into main
 - Task #2 — PR1-b (items layer): merged into main
-- Task #3 — PR2 (categories): completed locally, ready for PR
-- Task #4 — PR3 (users): pending after PR2
-- Task #5 — PR4 (orders): pending after PR2 and PR3
+- Task #3 — PR2 (categories): merged into main
+- Task #4 — PR3 (users): completed locally, ready for PR
+- Task #5 — PR4 (orders): pending after PR3

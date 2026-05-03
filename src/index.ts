@@ -11,6 +11,7 @@ import {
   CategoriesUpdate,
 } from './routes/categories'
 import { ItemsCreate, ItemsDelete, ItemsGet, ItemsList, ItemsUpdate } from './routes/items'
+import { UsersCreate, UsersDelete, UsersGet, UsersList, UsersUpdate } from './routes/users'
 import type { Bindings } from './types'
 
 const app = new Hono<{ Bindings: Bindings }>()
@@ -45,5 +46,10 @@ openapi.get('/categories/:id', CategoriesGet)
 openapi.post('/categories', CategoriesCreate)
 openapi.put('/categories/:id', CategoriesUpdate)
 openapi.delete('/categories/:id', CategoriesDelete)
+openapi.get('/users', UsersList)
+openapi.get('/users/:id', UsersGet)
+openapi.post('/users', UsersCreate)
+openapi.put('/users/:id', UsersUpdate)
+openapi.delete('/users/:id', UsersDelete)
 
 export default app
