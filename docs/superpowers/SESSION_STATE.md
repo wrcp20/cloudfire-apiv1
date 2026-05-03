@@ -1,7 +1,7 @@
 # Session State — cloudfire-apiv1 v2 upgrade
 
 **Last updated:** 2026-05-01  
-**Status:** Plan completo, listo para ejecutar. Tasks 1-5 del PR1 NO iniciadas aún.
+**Status:** PR1-a y PR1-b completados localmente en `feat/infra-drizzle-chanfana`. PR2-PR4 siguen pendientes.
 
 ---
 
@@ -12,6 +12,8 @@
 3. **Diseño aprobado** — spec en `docs/superpowers/specs/2026-05-01-apiv1-v2-clean-code-design.md`
 4. **Plan completo escrito** — `docs/superpowers/plans/2026-05-01-apiv1-v2-clean-code.md`
 5. **Ambos commiteados y pusheados a main**
+6. **PR1-a ejecutado localmente** — issue `#12` creado y agregado al project board, branch `feat/infra-drizzle-chanfana` activa, deps v2 agregadas, `src/db/{schema.ts,index.ts}` creados, `migrations/0002_v2_schema.sql` creado y `src/types.ts` migrado
+7. **PR1-b ejecutado localmente** — `items` migrado a Zod + Drizzle + Chanfana (`src/schemas/items.schema.ts`, `src/repositories/items.repository.ts`, `src/routes/items.ts`, `src/index.ts`), mock D1 reemplazado por SQLite real en memoria con `better-sqlite3`, tests ampliados a 26 casos
 
 ---
 
@@ -59,8 +61,8 @@ order_items id, order_id→orders, item_id→items, quantity, unit_price(snapsho
 
 | # | Task | Branch | Estado |
 |---|---|---|---|
-| PR1-a | GitHub issue + deps + Drizzle schema + migration + types | `feat/infra-drizzle-chanfana` | **PENDIENTE** |
-| PR1-b | Items schema + repo + route + index.ts + d1-mock + tests + PR | `feat/infra-drizzle-chanfana` | **PENDIENTE** |
+| PR1-a | GitHub issue + deps + Drizzle schema + migration + types | `feat/infra-drizzle-chanfana` | **COMPLETADO LOCAL** |
+| PR1-b | Items schema + repo + route + index.ts + d1-mock + tests + PR | `feat/infra-drizzle-chanfana` | **COMPLETADO LOCAL** |
 | PR2 | Categories resource completo + PR | `feat/categories` | **PENDIENTE** (espera PR1) |
 | PR3 | Users resource completo + PR | `feat/users` | **PENDIENTE** (espera PR1) |
 | PR4 | Orders resource + service + PR | `feat/orders` | **PENDIENTE** (espera PR1+PR3) |
@@ -72,10 +74,11 @@ order_items id, order_id→orders, item_id→items, quantity, unit_price(snapsho
 1. Leer este archivo
 2. Leer el plan completo: `docs/superpowers/plans/2026-05-01-apiv1-v2-clean-code.md`
 3. Verificar estado del repo: `git branch -a` y `git status`
-4. Si estamos en `main` sin cambios → empezar por Task 1 del PR1
+4. Hacer commit/push/PR de `feat/infra-drizzle-chanfana` o continuar con PR2 desde una branch nueva cuando se cierre PR1
 5. Ejecutar con: invocar skill `superpowers:subagent-driven-development`
 6. Tests corren via Docker: `docker compose --profile test run --rm test`
 7. NUNCA correr `npm install` en el host — solo dentro de Docker
+8. `docker compose --profile test run --rm test npm run typecheck`, `npm test` y `npm run lint` pasan; lint deja warnings por casts de compatibilidad en Chanfana
 
 ---
 
@@ -91,8 +94,8 @@ order_items id, order_id→orders, item_id→items, quantity, unit_price(snapsho
 
 ## Tasks del sistema (IDs)
 
-- Task #1 — PR1-a (infra): in_progress
-- Task #2 — PR1-b (items layer): blocked por #1
+- Task #1 — PR1-a (infra): completed locally
+- Task #2 — PR1-b (items layer): completed locally
 - Task #3 — PR2 (categories): blocked por #1, #2
 - Task #4 — PR3 (users): blocked por #1, #2
 - Task #5 — PR4 (orders): blocked por #1, #2, #4

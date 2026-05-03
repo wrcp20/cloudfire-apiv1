@@ -17,6 +17,8 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250430.0",
     "@eslint/js": "^9.26.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "better-sqlite3": "^11.10.0",
     "eslint": "^9.26.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.0",
@@ -24,6 +26,9 @@
     "wrangler": "^4.86.0"
   },
   "dependencies": {
-    "hono": "^4.7.10"
+    "chanfana": "^2.4.3",
+    "drizzle-orm": "^0.43.1",
+    "hono": "^4.7.10",
+    "zod": "^4.0.0"
   }
 }
