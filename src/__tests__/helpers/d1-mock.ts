@@ -1,67 +1,71 @@
+import BetterSqlite3 from 'better-sqlite3'
 import type { D1Database } from '@cloudflare/workers-types'
-import type { Item } from '../../types'
 
-type Row = Item
+export const SCHEMA = `
+  CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE TABLE IF NOT EXISTS items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT,
+    price REAL NOT NULL DEFAULT 0,
+    category_id INTEGER REFERENCES categories(id),
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    status TEXT NOT NULL DEFAULT 'pending',
+    total REAL NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE TABLE IF NOT EXISTS order_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id INTEGER NOT NULL REFERENCES orders(id),
+    item_id INTEGER NOT NULL REFERENCES items(id),
+    quantity INTEGER NOT NULL,
+    unit_price REAL NOT NULL
+  );
+`
 
-export function createTestDb(): D1Database {
-  const rows: Row[] = []
-  let nextId = 1
+export function createTestDb(schema: string = SCHEMA): D1Database {
+  const sqlite = new BetterSqlite3(':memory:')
+  sqlite.exec(schema)
 
-  function now() {
-    return new Date().toISOString().replace('T', ' ').slice(0, 19)
+  function makeStmt(query: string, args: unknown[] = []) {
+    const stmt = sqlite.prepare(query)
+    const rawStmt = sqlite.prepare(query).raw(true)
+
+    return {
+      all: <T>() => Promise.resolve({ results: stmt.all(...args) as T[] }),
+      first: <T>() => Promise.resolve((stmt.get(...args) ?? null) as T | null),
+      run: () => {
+        stmt.run(...args)
+        return Promise.resolve({ success: true as const, results: [], meta: {} as D1Meta })
+      },
+      raw: <T>() => Promise.resolve(rawStmt.all(...args) as T[]),
+    }
   }
-
-  function run(query: string, args: unknown[]): { results: Row[]; single: Row | null } {
-    const q = query.trim().replace(/\s+/g, ' ')
-
-    if (/^SELECT \* FROM items ORDER BY/.test(q)) {
-      return { results: [...rows].reverse(), single: null }
-    }
-
-    if (/^SELECT (\*|id) FROM items WHERE id = \?/.test(q)) {
-      const found = rows.find(r => r.id === Number(args[0])) ?? null
-      return { results: found ? [found] : [], single: found }
-    }
-
-    if (/^INSERT INTO items/.test(q)) {
-      const [name, description, price] = args as [string, string | null, number]
-      const row: Row = { id: nextId++, name, description: description ?? null, price, created_at: now() }
-      rows.push(row)
-      return { results: [row], single: row }
-    }
-
-    if (/^UPDATE items SET/.test(q)) {
-      const [name, description, price, id] = args as [string, string | null, number, number]
-      const row = rows.find(r => r.id === id) ?? null
-      if (row) { row.name = name; row.description = description ?? null; row.price = price }
-      return { results: row ? [row] : [], single: row }
-    }
-
-    if (/^DELETE FROM items WHERE id = \?/.test(q)) {
-      const idx = rows.findIndex(r => r.id === Number(args[0]))
-      if (idx !== -1) rows.splice(idx, 1)
-      return { results: [], single: null }
-    }
-
-    return { results: [], single: null }
-  }
-
-  const makeBound = (query: string, args: unknown[]) => ({
-    all: <T>() => Promise.resolve({ results: run(query, args).results as unknown as T[] }),
-    first: <T>() => Promise.resolve(run(query, args).single as unknown as T | null),
-    run: () => { run(query, args); return Promise.resolve({ success: true as const, results: [], meta: {} as D1Meta }) },
-    raw: <T>() => Promise.resolve([] as T[]),
-  })
 
   return {
     prepare: (query: string) => ({
-      bind: (...args: unknown[]) => makeBound(query, args),
-      all: <T>() => Promise.resolve({ results: run(query, []).results as unknown as T[] }),
-      first: <T>() => Promise.resolve(run(query, []).single as unknown as T | null),
-      run: () => Promise.resolve({ success: true as const, results: [], meta: {} as D1Meta }),
-      raw: <T>() => Promise.resolve([] as T[]),
+      ...makeStmt(query),
+      bind: (...args: unknown[]) => makeStmt(query, args),
     }),
-    exec: (_q: string) => Promise.resolve({ count: 0, duration: 0 }),
+    exec: (query: string) => {
+      sqlite.exec(query)
+      return Promise.resolve({ count: 0, duration: 0 })
+    },
     batch: async () => [],
     dump: async () => new ArrayBuffer(0),
   } as unknown as D1Database
